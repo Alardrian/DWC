@@ -2,6 +2,9 @@
 let maxFilas = prompt("¿Cuantas filas quieres?");
 let maxColumnas = prompt("¿Cuantas columnas quieres?");
 let numMinas = prompt("¿Cuantas minas quieres introducir?")
+let contadorMinas = 0;
+let posFila;
+let posColumna;
 
 
 //creamos tablero en html
@@ -26,10 +29,25 @@ document.write("</table>");
 
 let arrayTablero = [];
 
-for (let mina = 0; mina < numMinas; mina++){
-    posFila = Math.floor(Math.random()*maxFilas);
-    console.log(posFila);
-  //  arrayTablero[posFila][posColumna] = "MINA";
-}
+for (let fila = 0; fila < maxFilas; fila++){
+    arrayTablero[fila] = [];
 
-console.log(arrayTablero);
+    for (let columna = 0; columna < maxColumnas; columna++) {
+        arrayTablero = [fila][columna] = "";
+    }
+};
+
+
+while (contadorMinas < numMinas) {
+
+    posFila = Math.floor(Math.random()*maxFilas);
+    posColumna = Math.floor(Math.random()*maxColumnas);
+
+    if (arrayTablero[posFila][posColumna] != "MINA"){
+        arrayTablero[posFila][posColumna] = "MINA"
+        contadorMinas++;
+    };
+
+};
+
+    console.log[arrayTablero];
