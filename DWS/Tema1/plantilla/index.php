@@ -13,6 +13,10 @@
                 <ul>
                     <a href="0_hola_mundo.php"><li>ejercicio 1 php</li></a>
                     <a href="1_hola_mundo.php"><li>ejercicio 2 php</li></a>
+                    <a href="2_variables_y_tipos.php"><li>ejercicio 3 php</li></a> 
+                    <a href="3_arrays_bucles.php"><li>ejercicio 4 php</li></a>
+                    <a href="4_constantes.php"><li>ejercicio 5 php</li></a>
+                    <a href="5_variables_super_globales.php"><li>ejercicio 6 php</li></a>
                 </ul>
 
             </div>
