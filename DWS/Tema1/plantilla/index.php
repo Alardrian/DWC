@@ -17,6 +17,7 @@
                     <a href="3_arrays_bucles.php"><li>ejercicio 4 php</li></a>
                     <a href="4_constantes.php"><li>ejercicio 5 php</li></a>
                     <a href="5_variables_super_globales.php"><li>ejercicio 6 php</li></a>
+                    <a href="6_variableURL.php"><li>ejercicio 7 php</li></a>
                 </ul>
 
             </div>
