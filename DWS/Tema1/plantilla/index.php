@@ -18,6 +18,8 @@
                     <a href="4_constantes.php"><li>ejercicio 5 php</li></a>
                     <a href="5_variables_super_globales.php"><li>ejercicio 6 php</li></a>
                     <a href="6_variableURL.php"><li>ejercicio 7 php</li></a>
+                    <a href="7_division0.php"><li>ejercicio 8 php</li></a>
+                    <a href="8_informacion.php"><li>ejercicio 9 php</li></a>
                 </ul>
 
             </div>

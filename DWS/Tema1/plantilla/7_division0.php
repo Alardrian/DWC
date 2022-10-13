@@ -18,33 +18,24 @@
                     <a href="4_constantes.php"><li>ejercicio 5 php</li></a>
                     <a href="5_variables_super_globales.php"><li>ejercicio 6 php</li></a>
                     <a href="6_variableURL.php"><li>ejercicio 7 php</li></a>
+                    <a href="7_division0.php"><li>ejercicio 8 php</li></a>
                 </ul>
 
             </div>
             <div class="segunda_columna">
               
-                <?php
+            <?php
+                ini_set('display_errors', 'On');
+                ini_set('html_errors', 0);
 
-                    ini_set('display_errors', 'On');
-                    ini_set('html_errors', 0);
+                try{
+                    echo 500/0;
+                }
+                catch(DivisionByZeroError $e){
+                    echo "$e";
+                }
 
-                    $_GET['vocal'];
-
-                    $vocales = ['a','e,','i','o','u'];
-                    
-                    if (empty($_GET)){
-                        echo 'no has puesto parametro';
-                    }
-                    else{
-                        if (in_array(strtolower($_GET['vocal']),$vocales)){
-                            echo $_GET['vocal'] . " es una vocal";
-                        }
-                        else{
-                            echo $_GET['vocal'] . " no es una vocal";
-                        }
-                    }
-                ?>
-
+            ?>
             </div>
             <div class="tercera_columna">assasas</div>
         </div>
