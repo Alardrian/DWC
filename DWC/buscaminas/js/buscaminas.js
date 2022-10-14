@@ -5,31 +5,36 @@ let numMinas = prompt('¿Cuántas minas quieres introducir?');
 
 // Creamos el tablero en html
 
-document.write('<table>');
+
 
 for (let i = 0; i < maxFilas; i++) {
-    document.write('<tr>');
+    
 
     for (let j = 0; j < maxColumnas; j++) {
-        document.write('<td></td>');
+            
     }
 
-    document.write('</tr>');
+    
 }
-document.write('</table>');
+
 
 
 // Crear array bidimensional para guardar las minas
 let arrayTablero = [];
 let contadorMinas = 0;
 
+document.write('<table>');
+
 for (let fila = 0; fila < maxFilas; fila++) {
     arrayTablero[fila] = new Array(maxColumnas);
-
+    document.write('<tr>');
     for (let columna = 0; columna < maxColumnas; columna++) {
         arrayTablero[fila][columna] = '';
+        document.write('<td></td>');
     }
+    document.write('</tr>');
 }
+document.write('</table>');
 
 
 let posFila;
@@ -59,14 +64,14 @@ for (let fila = 0; fila < maxFilas; fila++) {
                         if (cColumna >= 0 && cColumna < maxColumnas &&
                             arrayTablero[cFila][cColumna] == 'MINA') {
                             numMinasAlrededor++;
-                        }
-                    }
-                }
+                        };
+                    };
+                };
                 arrayTablero[fila][columna] = numMinasAlrededor;
-            }
+            };
 
-        }
-    }
-}
+        };
+    };
+};
 
     console.log(arrayTablero);
