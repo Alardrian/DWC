@@ -20,6 +20,7 @@
                     <a href="6_variableURL.php"><li>ejercicio 7 php</li></a>
                     <a href="7_division0.php"><li>ejercicio 8 php</li></a>
                     <a href="8_informacion.php"><li>ejercicio 9 php</li></a>
+                    <a href="9_arrayNombres.php"><li>ejercicio 10 php</li></a>
                 </ul>
 
             </div>
