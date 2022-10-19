@@ -16,6 +16,12 @@
         echo $calc->factorial(5);
         echo '<br>';
         echo $calc->coeficienteBinomial(5,2);
+        echo '<br>';
+        echo $calc->convierteBinarioDecimal('100100000');
+        echo '<br>';
+        echo $calc->sumaNumerosPares([1,3,4]);
+        echo '<br>';
+        echo $calc->esCapicua('131');
     ?>
     
 </body>
