@@ -1,3 +1,15 @@
-table{
-    border: 1 solid black;
+table, td, tr{
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
 }
+table{
+    width: 100px;
+    height: 100px;
+}
+.contenedor{
+    height: 500px;
+    width: 500px;
+    margin: auto;
+    margin-top: 25vh;
+}
+
