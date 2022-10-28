@@ -1,43 +1,75 @@
-function AppFuncionando(){
-    let filas = prompt('Cuantas filas quieres que tenga el tablero?');
-    let columnas = prompt('Cuantas columnas quieres que tenga el tablero?');
+class Tablero {
+    constructor(filas, columnas) {
+        do{
+        filas = prompt('¿Cuántas filas quieres?');
+        columnas = prompt('¿Cuántas columnas quieres?');
+        }
+        while (filas*columnas%2 != 0)
 
-    while ((filas*columnas)%2 != 0){
-        filas = prompt('Cuantas filas quieres que tenga el tablero?');
-        columnas = prompt('Cuantas columnas quieres que tenga el tablero?');
+        this.filas = filas;
+        this.columnas = columnas;
+
+        this.crearTablero();
     }
 
-    pintarTablero(crearArrayTablero(filas,columnas),filas,columnas);
-}
+    crearTablero() {
+        this.arrayTablero = [];
 
-function crearArrayTablero(filas, columnas){
+        for (let fila = 0; fila < this.filas; fila++) {
+            this.arrayTablero[fila] = [];
 
-    let arrayTablero = [];
-
-    for (let i = 0; i < filas; i++) {
-        arrayTablero[i] = new Array(columnas);
-
-        for (let j = 0; j < columnas; j++) {
-            arrayTablero[i][j] = '';
+            for (let columna = 0; columna < this.columnas; columna++) {
+                this.arrayTablero[fila][columna] = '';
+            }
         }
     }
-    return arrayTablero;
-}
 
-function pintarTablero(tablero,filas,columnas){
+    dibujarTablero() {
+        document.write('<table>');
 
-    let numeros = [1,2,3,4,5,7,8,9,10];
-    
-    document.write('<table>');
-    for (let i = 0; i <filas; i++) {
-        document.write('<tr>');
+        for (let i = 0; i < this.filas; i++) {
+            document.write('<tr>');
 
-        for (let j = 0; j <columnas; j++) {
-           document.write(`<td>${tablero[i][j]}</td>`)
+            for (let j = 0; j < this.columnas; j++) {
+                document.write(`<td>${this.arrayTablero[i][j]}</td>`);
+            }
+
+            document.write('</tr>');
         }
-        document.write('</tr>')
+        document.write('</table>');
     }
-    document.write('</table>');
-}
 
-AppFuncionando();
+    modificarFilas(nuevasFilas){
+        this.filas = nuevasFilas;
+
+        this.crearTablero();
+    }
+
+    modificarColumnas(nuevasColumnas) {
+        this.columnas = nuevasColumnas;
+
+        this.crearTablero();
+    }
+
+}
+class juegoMemoria extends Tablero {
+    constructor(filas, columnas){
+        super(filas,columnas);
+
+        this.colocarParejas();
+    }
+
+    colocarParejas(){
+        let parejas = [1,2,3,4,5,6,7,8,9,10];
+
+        for (let fila = 0; fila < this.filas; fila++) {
+            for (let columna = 0; columna < this.columnas; columna++) {
+
+                this.arrayTablero[fila][columna] = parejas[fila];
+            }
+        }
+    }
+ }
+let memorin = new juegoMemoria(4,4);
+console.log(memorin.arrayTablero);
+memorin.dibujarTablero();
