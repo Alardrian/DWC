@@ -56,20 +56,48 @@ class juegoMemoria extends Tablero {
     constructor(filas, columnas){
         super(filas,columnas);
 
-        this.colocarParejas();
+       this.colocarParejas();
     }
 
     colocarParejas(){
-        let parejas = [1,2,3,4,5,6,7,8,9,10];
+        //let parejas = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
+        /* var imgArray = new Array();
+        imgArray[0] = new Image();
+        imgArray[0].src = '/imgs/1.jpg';
+        document.getElementById("mainImage").src = imgArray[0].src;
+        */
+       //let imagen1 = new Image;
+       //imagen1.src = 'DWC\juegoMemoria\imgs\1.jpg';
 
-        for (let fila = 0; fila < this.filas; fila++) {
-            for (let columna = 0; columna < this.columnas; columna++) {
+       
+        let parejas = ["☻","☺","♥","♦","♣","◄","☼","♫","◘","§"];
+        let casillasOcupadas = 0;
+        let numParejas = 0;
+        let repetidos = 0;
 
-                this.arrayTablero[fila][columna] = parejas[fila];
+        do {
+            let fila = Math.floor(Math.random() * this.filas);
+            let columna = Math.floor(Math.random() * this.columnas);
+
+            while (numParejas < 2 && this.arrayTablero[fila][columna] == '') {
+
+                this.arrayTablero[fila][columna] = parejas[repetidos];
+                casillasOcupadas += 1;
+                numParejas += 1;
+            }
+            if (numParejas > 1){
+                numParejas -= numParejas;
+                repetidos += 1;
+
+                if (repetidos == parejas.length){
+                    repetidos -= repetidos;
+                }
             }
         }
+        while (casillasOcupadas != (this.filas*this.columnas)) 
     }
+
  }
-let memorin = new juegoMemoria(4,4);
+let memorin = new juegoMemoria(4,2);
 console.log(memorin.arrayTablero);
 memorin.dibujarTablero();
