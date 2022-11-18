@@ -41,17 +41,33 @@ class Tablero {
         let fila;
         let columna;
 
+
         for (let i = 0; i < this.filas; i++) {
             fila = document.createElement('tr');
             tabla.appendChild(fila);
 
+
             for (let j = 0; j < this.columnas; j++) {
                 columna = document.createElement('td');
                 fila.appendChild(columna);
+
+                columna.id= `f${i}_c${j}`;
+                columna.dataset.fila = i;
+                columna.dataset.columna = j;
+
+                columna.addEventListener("click",this.despejar);
+                columna.addEventListener("contextmenu",this.marcar);
             }
         }
-
         document.body.appendChild(tabla);
+    }
+
+    despejar(){
+        alert(this.columna.nodeName);
+    }
+
+    marcar(){
+        alert("marcar");
     }
     
 
