@@ -125,6 +125,7 @@ class Buscaminas extends Tablero {
                 }
             }
         }
+        console.log(this.arrayTablero);
     }
 
     dibujarTableroDOM(){
@@ -150,25 +151,31 @@ class Buscaminas extends Tablero {
         let celda = evento.currentTarget;
         let fila = celda.dataset.fila;
         let columna = celda.dataset.columna;
+        
+        let valorCelda = this.arrayTablero[fila][columna];
+        let esNumero = !isNaN(valorCelda) && valorCelda != 0;
+        let esBomba = valorCelda === "MINA";
 
         if (celda.innerHTML === ""){
 
-            if(!isNaN(this.arrayTablero[fila][columna])){
-            celda.innerHTML = this.arrayTablero[fila][columna];
+            if(esNumero){
+                celda.innerHTML = valorCelda;
+                celda.removeEventListener("click",this.despejar.bind(this));
+                celda.removeEventListener("contextmenu",this.marcar.bind(this));
             }
-            if (this.arrayTablero[fila][columna] === "MINA"){
-                alert("Pierdes");
-                celda.innerHTML = this.arrayTablero[fila][columna];
+            else if (esBomba){
+                celda.innerHTML = valorCelda;
 
                 for (let i = 0; i < this.filas; i++) {
                     for (let j = 0; j < this.columnas; j++) {
 
                         celda = document.getElementById(`f${i}_c${j}`);
+                        celda.removeEventListener("click",this.despejar.bind(this));
+                        celda.removeEventListener("contextmenu",this.marcar.bind(this));
 
-                        if (celda.innerHTML === "🚩"){
-                            if(this.arrayTablero[i][j] != "MINA"){
-                                celda.style.backgroundColor = "red";
-                            }
+                        if (celda.innerHTML === "🚩" && this.arrayTablero[i][j] != "MINA"){
+                            celda.innerHTML = "";
+                            celda.style.backgroundColor = "red";
                         }
                         if(this.arrayTablero[i][j] === "MINA"){
                             celda.innerHTML = this.arrayTablero[i][j];
@@ -176,8 +183,21 @@ class Buscaminas extends Tablero {
                     }
                 }
             }
+            else if (valorCelda === 0){
+
+                
+                for (let i = parseInt(fila)-1; i <= parseInt(fila)+1; i++) {
+                    if ((i >= 0) && (i < this.filas)) {
+                        for (let j = parseInt(columna)-1; j <= parseInt(columna)+1; j++) {
+                            if((j >= 0) && (j < this.columnas)){
+                                celda = document.getElementById(`f${i}_c${j}`);
+                                this.despejar();
+                            }
+                        }
+                    }
+                }
+            }
         }
-        
     }
     
     marcar(elEvento){
