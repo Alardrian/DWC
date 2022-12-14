@@ -54,6 +54,7 @@ class Tablero {
                 columna.id= `f${i}_c${j}`;
                 columna.dataset.fila = i;
                 columna.dataset.columna = j;
+                columna.dataset.despejado = false;
 
                 document.oncontextmenu = function(){return false};
             }
@@ -138,6 +139,9 @@ class Buscaminas extends Tablero {
             for (let j = 0; j < this.columnas; j++) {
                celda = document.getElementById(`f${i}_c${j}`);
 
+                this.despejar = this.despejar.bind(this);
+                this.marcar = this.marcar.bind(this);
+
                 celda.addEventListener("click",this.despejar.bind(this));
                 celda.addEventListener("contextmenu",this.marcar.bind(this));
                 document.oncontextmenu = function(){return false};
@@ -149,19 +153,31 @@ class Buscaminas extends Tablero {
     despejar(elEvento) {
         let evento = elEvento || window.event;
         let celda = evento.currentTarget;
-        let fila = celda.dataset.fila;
-        let columna = celda.dataset.columna;
+        this.despejar2(celda);
+    }
+
+    despejar2(celda){
+        let fila = parseInt(celda.dataset.fila);
+        let columna = parseInt(celda.dataset.columna);
+
+        celda.removeEventListener("click",this.despejar);
+        celda.removeEventListener("contextmenu",this.marcar);
+
+        celda.dataset.despejado = true;
+        celda.style.backgroundColor = "lightgrey";
+        
         
         let valorCelda = this.arrayTablero[fila][columna];
         let esNumero = !isNaN(valorCelda) && valorCelda != 0;
         let esBomba = valorCelda === "MINA";
+        let estaDespejado;
+
+        let celdaNueva;
 
         if (celda.innerHTML === ""){
 
             if(esNumero){
                 celda.innerHTML = valorCelda;
-                celda.removeEventListener("click",this.despejar.bind(this));
-                celda.removeEventListener("contextmenu",this.marcar.bind(this));
             }
             else if (esBomba){
                 celda.innerHTML = valorCelda;
@@ -170,8 +186,8 @@ class Buscaminas extends Tablero {
                     for (let j = 0; j < this.columnas; j++) {
 
                         celda = document.getElementById(`f${i}_c${j}`);
-                        celda.removeEventListener("click",this.despejar.bind(this));
-                        celda.removeEventListener("contextmenu",this.marcar.bind(this));
+                        celda.removeEventListener("click",this.despejar);
+                        celda.removeEventListener("contextmenu",this.marcar);
 
                         if (celda.innerHTML === "🚩" && this.arrayTablero[i][j] != "MINA"){
                             celda.innerHTML = "";
@@ -185,17 +201,19 @@ class Buscaminas extends Tablero {
             }
             else if (valorCelda === 0){
 
-                
-                for (let i = parseInt(fila)-1; i <= parseInt(fila)+1; i++) {
-                    if ((i >= 0) && (i < this.filas)) {
-                        for (let j = parseInt(columna)-1; j <= parseInt(columna)+1; j++) {
-                            if((j >= 0) && (j < this.columnas)){
-                                celda = document.getElementById(`f${i}_c${j}`);
-                                this.despejar();
+                    for (let i = fila-1; i <= fila+1; i++) {
+                        if ((i >= 0) && (i < this.filas)) {
+                            for (let j = columna-1; j <= columna+1; j++) {
+                                if((j >= 0) && (j < this.columnas)){
+                                    celdaNueva = document.getElementById(`f${i}_c${j}`);
+                                    estaDespejado = (celdaNueva.dataset.despejado == "true");
+                                    if(!estaDespejado){
+                                        this.despejar2(celdaNueva);
+                                    }
+                                }
                             }
                         }
                     }
-                }
             }
         }
     }
@@ -218,7 +236,7 @@ class Buscaminas extends Tablero {
 }
 
 window.onload = function() {
-    let buscaminas1 = new Buscaminas(5, 5, 5);
+    let buscaminas1 = new Buscaminas(5,5,5);
     buscaminas1.dibujarTableroDOM();
     
 }
