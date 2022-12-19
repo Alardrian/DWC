@@ -65,24 +65,21 @@ class Tablero {
     modificarFilas(nuevasFilas) {
         // Modificar el número de filas y volver a crear el tablero con las filas nuevas
         this.filas = nuevasFilas;
-
         this.crearTablero();
     }
 
     modificarColumnas(nuevasColumnas) {
         // Modificar el número de columnas y volver a crear el tablero con las columnas nuevas
         this.columnas = nuevasColumnas;
-
         this.crearTablero();
     }
-
-
 }
 
 class Buscaminas extends Tablero {
     constructor(filas, columnas, numMinas) {
         super(filas, columnas);
         this.numMinas = numMinas;
+        this.contadorBanderas = 0;
 
         this.colocarMinas();
         this.colocarNumMinas();
@@ -132,18 +129,18 @@ class Buscaminas extends Tablero {
     dibujarTableroDOM(){
         super.dibujarTableroDOM();
 
+
         let celda;
+        this.despejar = this.despejar.bind(this);
+        this.marcar = this.marcar.bind(this);
 
         for (let i = 0; i < this.filas; i++) {
             
             for (let j = 0; j < this.columnas; j++) {
                celda = document.getElementById(`f${i}_c${j}`);
 
-                this.despejar = this.despejar.bind(this);
-                this.marcar = this.marcar.bind(this);
-
-                celda.addEventListener("click",this.despejar.bind(this));
-                celda.addEventListener("contextmenu",this.marcar.bind(this));
+                celda.addEventListener("click",this.despejar);
+                celda.addEventListener("contextmenu",this.marcar);
                 document.oncontextmenu = function(){return false};
             }
             
@@ -173,8 +170,11 @@ class Buscaminas extends Tablero {
         let estaDespejado;
 
         let celdaNueva;
-
-        if (celda.innerHTML === ""){
+        
+        if (celda.innerHTML === "🚩"){
+            
+        }
+        if (celda.innerHTML === "" || celda.innerHTML === "❓"){
 
             if(esNumero){
                 celda.innerHTML = valorCelda;
@@ -201,36 +201,66 @@ class Buscaminas extends Tablero {
             }
             else if (valorCelda === 0){
 
-                    for (let i = fila-1; i <= fila+1; i++) {
-                        if ((i >= 0) && (i < this.filas)) {
-                            for (let j = columna-1; j <= columna+1; j++) {
-                                if((j >= 0) && (j < this.columnas)){
-                                    celdaNueva = document.getElementById(`f${i}_c${j}`);
-                                    estaDespejado = (celdaNueva.dataset.despejado == "true");
-                                    if(!estaDespejado){
-                                        this.despejar2(celdaNueva);
-                                    }
+                for (let i = fila-1; i <= fila+1; i++) {
+                    if ((i >= 0) && (i < this.filas)) {
+                        for (let j = columna-1; j <= columna+1; j++) {
+                            if((j >= 0) && (j < this.columnas)){
+                                celdaNueva = document.getElementById(`f${i}_c${j}`);
+                                estaDespejado = (celdaNueva.dataset.despejado == "true");
+                                if(!estaDespejado){
+                                    celdaNueva.innerHTML = "";
+                                    this.despejar2(celdaNueva); 
                                 }
                             }
                         }
                     }
+                }
             }
         }
     }
     
     marcar(elEvento){
-
         let evento = elEvento || window.event;
         let celda = evento.currentTarget;
 
         if (celda.innerHTML === "🚩"){
             celda.innerHTML = "❓";
+            celda.addEventListener("click",this.despejar);
+            this.contadorBanderas -= 1;
         }
         else if (celda.innerHTML === "❓"){
+            celda.addEventListener("click",this.despejar);
             celda.innerHTML = "";
         }   
         else{
-            celda.innerHTML = "🚩";
+            if(this.contadorBanderas < this.numMinas){
+                celda.innerHTML = "🚩";
+                celda.removeEventListener("click",this.despejar);
+                this.contadorBanderas += 1;
+
+                if (this.contadorBanderas === this.numMinas){
+                    this.ganar();
+                }
+            }
+            else {
+                alert ("No puedes poner mas banderas que minas hay en el tablero");
+            }
+        }
+    }
+
+    ganar(){
+        let minasCorrectas = 0;
+
+        for (let i = 0; i < this.filas; i++) {
+            for (let j = 0; j < this.columnas; j++) {
+                let celda = document.getElementById(`f${i}_c${j}`);
+                if (this.arrayTablero[i][j] === "MINA" && celda.innerHTML == "🚩"){
+                    minasCorrectas++;
+                }
+            }
+        }
+        if (minasCorrectas === this.numMinas){
+            alert("Has ganado!");
         }
     }
 }
@@ -238,5 +268,4 @@ class Buscaminas extends Tablero {
 window.onload = function() {
     let buscaminas1 = new Buscaminas(5,5,5);
     buscaminas1.dibujarTableroDOM();
-    
 }
