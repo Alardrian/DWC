@@ -1,0 +1,15 @@
+table{
+    margin: auto;
+    margin-top: 10%;
+    text-align: center;
+}
+
+td,table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+td{
+    width: 80px;
+    height: 80px;
+}
