@@ -262,6 +262,7 @@ class Buscaminas extends Tablero {
         if (minasCorrectas === this.numMinas){
             alert("Has ganado!");
         }
+        
     }
 }
 
