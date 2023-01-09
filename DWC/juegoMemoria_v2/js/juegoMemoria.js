@@ -24,21 +24,31 @@ class Tablero {
         }
     }
 
-    dibujarTablero() {
-        document.write('<table>');
+    dibujarTableroDOM(){
+        // Creamos el tablero en DOM
+        let tabla = document.createElement('table');
+        let fila;
+        let columna;
 
         for (let i = 0; i < this.filas; i++) {
-            document.write('<tr>');
+            fila = document.createElement('tr');
+            tabla.appendChild(fila);
+
 
             for (let j = 0; j < this.columnas; j++) {
-                document.write(`<td>${this.arrayTablero[i][j]}</td>`);
+                columna = document.createElement('td');
+                fila.appendChild(columna);
+
+                columna.id= `f${i}_c${j}`;
+                columna.dataset.fila = i;
+                columna.dataset.columna = j;
+                columna.dataset.despejado = false;
+
+                document.oncontextmenu = function(){return false};
             }
-
-            document.write('</tr>');
         }
-        document.write('</table>');
+        document.body.appendChild(tabla);
     }
-
     modificarFilas(nuevasFilas){
         this.filas = nuevasFilas;
 
@@ -58,6 +68,34 @@ class juegoMemoria extends Tablero {
 
        this.colocarParejas();
     }
+
+    dibujarTableroDOM(){
+        super.dibujarTableroDOM();
+
+        let celda;
+        this.marcar = this.marcar.bind(this);
+
+        for (let i = 0; i < this.filas; i++) {
+            
+            for (let j = 0; j < this.columnas; j++) {
+               celda = document.getElementById(`f${i}_c${j}`);
+
+                celda.addEventListener("contextmenu",this.marcar);
+                document.oncontextmenu = function(){return false};
+            }
+            
+        }
+    }
+
+    marcar(elEvento){
+        let evento = elEvento || window.event;
+        let celda = evento.currentTarget;
+        let cFila = celda.dataset.fila;
+        let cColumna = celda.dataset.columna;
+
+        celda.innerHTML = this.arrayTablero[cFila][cColumna];
+    }
+
 
     colocarParejas(){
         //let parejas = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
@@ -98,6 +136,7 @@ class juegoMemoria extends Tablero {
     }
 
  }
-let memorin = new juegoMemoria(4,2);
-console.log(memorin.arrayTablero);
-memorin.dibujarTablero();
+ window.onload = function() {
+    let memorin1 = new juegoMemoria();
+    memorin1.dibujarTableroDOM();
+}
