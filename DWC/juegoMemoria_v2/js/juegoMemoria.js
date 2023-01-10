@@ -74,6 +74,14 @@ class juegoMemoria extends Tablero {
 
         let celda;
         this.marcar = this.marcar.bind(this);
+        this.reiniciar = this.reiniciar.bind(this);
+
+        const botonReiniciar = document.createElement('button');
+        botonReiniciar.type = 'button';
+        botonReiniciar.innerText = 'Reiniciar';
+        document.body.appendChild(botonReiniciar);
+
+        botonReiniciar.addEventListener("click", this.reiniciar);
 
         for (let i = 0; i < this.filas; i++) {
             
@@ -96,6 +104,19 @@ class juegoMemoria extends Tablero {
         celda.innerHTML = this.arrayTablero[cFila][cColumna];
     }
 
+    reiniciar(){
+
+        let celda;
+        
+        for (let i = 0; i < this.filas; i++) {
+            for (let j = 0; j < this.columnas; j++) {
+                
+                celda = document.getElementById(`f${i}_c${j}`);
+                celda.innerHTML = "";
+            }
+        }
+        
+    }
 
     colocarParejas(){
         //let parejas = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
