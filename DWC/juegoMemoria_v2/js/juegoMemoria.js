@@ -65,6 +65,7 @@ class Tablero {
 class juegoMemoria extends Tablero {
     constructor(filas, columnas){
         super(filas,columnas);
+        let valorprevio;
 
        this.colocarParejas();
     }
@@ -96,12 +97,26 @@ class juegoMemoria extends Tablero {
     }
 
     marcar(elEvento){
+
         let evento = elEvento || window.event;
         let celda = evento.currentTarget;
+
+        let comprobacion = (this.valorprevio == celda.innerHTML);
+
         let cFila = celda.dataset.fila;
         let cColumna = celda.dataset.columna;
 
         celda.innerHTML = this.arrayTablero[cFila][cColumna];
+        this.valorprevio = this.arrayTablero[cFila][cColumna];
+
+        if (!comprobacion){
+            
+        }
+
+    }
+
+    comprobar(){
+
     }
 
     reiniciar(){
