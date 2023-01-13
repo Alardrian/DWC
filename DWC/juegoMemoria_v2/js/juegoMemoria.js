@@ -43,6 +43,9 @@ class Tablero {
                 columna.dataset.fila = i;
                 columna.dataset.columna = j;
                 columna.dataset.despejado = false;
+                columna.fila = i;
+                columna.columna = j;
+                columna.despejado = false;
 
                 document.oncontextmenu = function(){return false};
             }
@@ -65,7 +68,9 @@ class Tablero {
 class juegoMemoria extends Tablero {
     constructor(filas, columnas){
         super(filas,columnas);
-        let valorprevio;
+        this.valorprevio;
+        this.valoractual;
+        this.contador = 0;
 
        this.colocarParejas();
     }
@@ -101,22 +106,42 @@ class juegoMemoria extends Tablero {
         let evento = elEvento || window.event;
         let celda = evento.currentTarget;
 
-        let comprobacion = (this.valorprevio == celda.innerHTML);
-
         let cFila = celda.dataset.fila;
         let cColumna = celda.dataset.columna;
 
-        celda.innerHTML = this.arrayTablero[cFila][cColumna];
-        this.valorprevio = this.arrayTablero[cFila][cColumna];
+        if (celda.dataset.despejado === false){
 
-        if (!comprobacion){
-            
+            if (this.contador === 1){
+                celda.innerHTML = this.arrayTablero[cFila][cColumna];
+                celda.dataset.despejado = true;
+                this.valoractual = [cFila,cColumna]
+                this.contador = 0;
+                if (this.arrayTablero[this.valoractual[0]][[this.valoractual[1]]] !=
+                    this.arrayTablero[this.valorprevio[0]][[this.valorprevio[1]]]){
+    
+                setTimeout(() => {
+                    this.quitarCartas(celda);
+                  }, 1000);
+                }
+            }
+            else {
+                celda.innerHTML = this.arrayTablero[cFila][cColumna];
+                celda.dataset.despejado = true;
+                this.valorprevio = [cFila,cColumna];
+                this.contador = 1;
+                
+            }
         }
-
+        
     }
 
-    comprobar(){
+    quitarCartas(celda){
+        celda.innerHTML = "";
+        celda.dataset.despejado = false;
 
+        celda = document.getElementById(`f${this.valorprevio[0]}_c${this.valorprevio[1]}`);
+        celda.innerHTML = "";
+        celda.dataset.despejado = false;
     }
 
     reiniciar(){
@@ -128,22 +153,14 @@ class juegoMemoria extends Tablero {
                 
                 celda = document.getElementById(`f${i}_c${j}`);
                 celda.innerHTML = "";
+                celda.dataset.despejado = false;
             }
         }
         
     }
 
     colocarParejas(){
-        //let parejas = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
-        /* var imgArray = new Array();
-        imgArray[0] = new Image();
-        imgArray[0].src = '/imgs/1.jpg';
-        document.getElementById("mainImage").src = imgArray[0].src;
-        */
-       //let imagen1 = new Image;
-       //imagen1.src = 'DWC\juegoMemoria\imgs\1.jpg';
 
-       
         let parejas = ["☻","☺","♥","♦","♣","◄","☼","♫","◘","§"];
         let casillasOcupadas = 0;
         let numParejas = 0;
