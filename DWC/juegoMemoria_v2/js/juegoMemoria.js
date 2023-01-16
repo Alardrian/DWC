@@ -42,10 +42,7 @@ class Tablero {
                 columna.dataset.fila = i;
                 columna.dataset.columna = j;
                 columna.dataset.despejado = false;
-                columna.fila = i;
-                columna.columna = j;
-                columna.despejado = false;
-                columna.puntuacion = 10;
+                columna.dataset.puntuacion = 10;
 
                 document.oncontextmenu = function(){return false};
             }
@@ -121,6 +118,8 @@ class juegoMemoria extends Tablero {
             setTimeout(() => {
                 this.quitarCartas(celda);
                 }, 500);
+            }else{
+                this.sumarPuntuacion(celda);
             }
         }
         else {
@@ -128,7 +127,7 @@ class juegoMemoria extends Tablero {
             celda.dataset.despejado = true;
             this.valorprevio = [cFila,cColumna];
             this.contador = 1;
-            celda.removeEventListener("contextmenu",this.marcar); 
+            celda.removeEventListener("contextmenu",this.marcar);
         }
     }
 
@@ -136,21 +135,38 @@ class juegoMemoria extends Tablero {
         celda.innerHTML = "";
         celda.dataset.despejado = false;
         celda.addEventListener("contextmenu",this.marcar);
+        this.comprobarPuntuacion(celda);
 
         celda = document.getElementById(`f${this.valorprevio[0]}_c${this.valorprevio[1]}`);
         celda.innerHTML = "";
         celda.dataset.despejado = false;
         celda.addEventListener("contextmenu",this.marcar);
+        this.comprobarPuntuacion(celda);
+    }
+
+    comprobarPuntuacion(celda){
+        switch (celda.dataset.puntuacion){
+            case "10": celda.dataset.puntuacion = "5";
+            break;
+
+            case "5": celda.dataset.puntuacion = "2.5"
+            break;
+
+            case "2.5": celda.dataset.puntuacion = "0";
+            break;
+        }
+    }
+    sumarPuntuacion(celda){
+        
     }
 
     reiniciar(){
 
         if (confirm("¿Seguro que quieres reiniciar? Se creará una partida nueva")) {
-            
             let celda;
-        
             this.valorprevio = null;
             this.valoractual = null;
+            
             for (let i = 0; i < this.filas; i++) {
                 for (let j = 0; j < this.columnas; j++) {
                     celda = document.getElementById(`f${i}_c${j}`);
