@@ -109,49 +109,49 @@ class juegoMemoria extends Tablero {
         let cFila = celda.dataset.fila;
         let cColumna = celda.dataset.columna;
 
-        if (celda.dataset.despejado === false){
-
-            if (this.contador === 1){
-                celda.innerHTML = this.arrayTablero[cFila][cColumna];
-                celda.dataset.despejado = true;
-                this.valoractual = [cFila,cColumna]
-                this.contador = 0;
-                if (this.arrayTablero[this.valoractual[0]][[this.valoractual[1]]] !=
-                    this.arrayTablero[this.valorprevio[0]][[this.valorprevio[1]]]){
+        if (this.contador === 1){
+            celda.innerHTML = this.arrayTablero[cFila][cColumna];
+            celda.dataset.despejado = true;
+            this.valoractual = [cFila,cColumna]
+            this.contador = 0;
+            if (this.arrayTablero[this.valoractual[0]][[this.valoractual[1]]] !=
+                this.arrayTablero[this.valorprevio[0]][[this.valorprevio[1]]]){
     
-                setTimeout(() => {
-                    this.quitarCartas(celda);
-                  }, 1000);
-                }
-            }
-            else {
-                celda.innerHTML = this.arrayTablero[cFila][cColumna];
-                celda.dataset.despejado = true;
-                this.valorprevio = [cFila,cColumna];
-                this.contador = 1;
-                
+            setTimeout(() => {
+                this.quitarCartas(celda);
+                }, 500);
             }
         }
-        
+        else {
+            celda.innerHTML = this.arrayTablero[cFila][cColumna];
+            celda.dataset.despejado = true;
+            this.valorprevio = [cFila,cColumna];
+            this.contador = 1;
+            celda.removeEventListener("contextmenu",this.marcar); 
+        }
     }
 
     quitarCartas(celda){
         celda.innerHTML = "";
         celda.dataset.despejado = false;
+        celda.addEventListener("contextmenu",this.marcar);
 
         celda = document.getElementById(`f${this.valorprevio[0]}_c${this.valorprevio[1]}`);
         celda.innerHTML = "";
         celda.dataset.despejado = false;
+        celda.addEventListener("contextmenu",this.marcar);
     }
 
     reiniciar(){
 
         let celda;
         
+        this.valorprevio = null;
+        this.valoractual = null;
         for (let i = 0; i < this.filas; i++) {
             for (let j = 0; j < this.columnas; j++) {
-                
                 celda = document.getElementById(`f${i}_c${j}`);
+                celda.addEventListener("contextmenu",this.marcar);
                 celda.innerHTML = "";
                 celda.dataset.despejado = false;
             }
