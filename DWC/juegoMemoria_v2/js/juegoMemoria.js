@@ -29,7 +29,6 @@ class Tablero {
         let tabla = document.createElement('table');
         let fila;
         let columna;
-
         for (let i = 0; i < this.filas; i++) {
             fila = document.createElement('tr');
             tabla.appendChild(fila);
@@ -46,6 +45,7 @@ class Tablero {
                 columna.fila = i;
                 columna.columna = j;
                 columna.despejado = false;
+                columna.puntuacion = 10;
 
                 document.oncontextmenu = function(){return false};
             }
@@ -71,6 +71,7 @@ class juegoMemoria extends Tablero {
         this.valorprevio;
         this.valoractual;
         this.contador = 0;
+        this.puntuacion = 0;
 
        this.colocarParejas();
     }
@@ -144,24 +145,26 @@ class juegoMemoria extends Tablero {
 
     reiniciar(){
 
-        let celda;
+        if (confirm("¿Seguro que quieres reiniciar? Se creará una partida nueva")) {
+            
+            let celda;
         
-        this.valorprevio = null;
-        this.valoractual = null;
-        for (let i = 0; i < this.filas; i++) {
-            for (let j = 0; j < this.columnas; j++) {
-                celda = document.getElementById(`f${i}_c${j}`);
-                celda.addEventListener("contextmenu",this.marcar);
-                celda.innerHTML = "";
-                celda.dataset.despejado = false;
+            this.valorprevio = null;
+            this.valoractual = null;
+            for (let i = 0; i < this.filas; i++) {
+                for (let j = 0; j < this.columnas; j++) {
+                    celda = document.getElementById(`f${i}_c${j}`);
+                    celda.addEventListener("contextmenu",this.marcar);
+                    celda.innerHTML = "";
+                    celda.dataset.despejado = false;
+                }
             }
         }
-        
     }
 
     colocarParejas(){
 
-        let parejas = ["☻","☺","♥","♦","♣","◄","☼","♫","◘","§"];
+        let parejas = ["🐟","🥶","👹","🖕","👽","😺","💣","🤢","💥","🌴"];
         let casillasOcupadas = 0;
         let numParejas = 0;
         let repetidos = 0;
