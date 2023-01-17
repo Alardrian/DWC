@@ -69,6 +69,7 @@ class juegoMemoria extends Tablero {
         this.valoractual;
         this.contador = 0;
         this.puntuacion = 0;
+        this.puntuacionMaxima = ((this.filas * this.columnas) / 2 * 10);
 
        this.colocarParejas();
     }
@@ -80,6 +81,7 @@ class juegoMemoria extends Tablero {
         this.marcar = this.marcar.bind(this);
         this.reiniciar = this.reiniciar.bind(this);
 
+        document.getElementById("h2").innerHTML = (`${this.puntuacion}/${this.puntuacionMaxima}`);
         const botonReiniciar = document.createElement('button');
         botonReiniciar.type = 'button';
         botonReiniciar.innerText = 'Reiniciar';
@@ -169,7 +171,7 @@ class juegoMemoria extends Tablero {
         else{
             this.puntuacion += puntuacion2;
         }
-        document.getElementById("h2").innerHTML = this.puntuacion;
+        document.getElementById("h2").innerHTML = (`${this.puntuacion}/${this.puntuacionMaxima}`);
     }
 
     reiniciar(){
@@ -180,7 +182,7 @@ class juegoMemoria extends Tablero {
             this.valoractual = null;
             this.puntuacion = 0;
             document.getElementById("h2").innerHTML = this.puntuacion;
-            
+
             for (let i = 0; i < this.filas; i++) {
                 for (let j = 0; j < this.columnas; j++) {
                     celda = document.getElementById(`f${i}_c${j}`);
