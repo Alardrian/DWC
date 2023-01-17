@@ -157,7 +157,19 @@ class juegoMemoria extends Tablero {
         }
     }
     sumarPuntuacion(celda){
-        
+
+        let puntuacion1 = parseFloat(celda.dataset.puntuacion);
+
+        celda = document.getElementById(`f${this.valorprevio[0]}_c${this.valorprevio[1]}`);
+        let puntuacion2 = parseFloat(celda.dataset.puntuacion);
+
+        if (puntuacion1 < puntuacion2){
+            this.puntuacion += puntuacion1;
+        }
+        else{
+            this.puntuacion += puntuacion2;
+        }
+        document.getElementById("h2").innerHTML = this.puntuacion;
     }
 
     reiniciar(){
@@ -166,6 +178,8 @@ class juegoMemoria extends Tablero {
             let celda;
             this.valorprevio = null;
             this.valoractual = null;
+            this.puntuacion = 0;
+            document.getElementById("h2").innerHTML = this.puntuacion;
             
             for (let i = 0; i < this.filas; i++) {
                 for (let j = 0; j < this.columnas; j++) {
