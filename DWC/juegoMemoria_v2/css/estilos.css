@@ -5,17 +5,37 @@ table{
 }
 
 td,table {
-    border: 1px solid black;
+    border: 2px solid rgba(0, 0, 0, 0.61);
     border-collapse: collapse;
+    background-image: linear-gradient(to right,#c5faf5,#e7aff8);
+}
+td:hover{
+    background-image: linear-gradient(to right,#c5faf5c9,rgba(175, 131, 189, 0.74));
 }
 
 td{
     width: 80px;
     height: 80px;
+    font-size: 30px;
 }
 button{
     margin-left: 45%;
     margin-top: 2%;
+
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    background-image: linear-gradient(to right,#e052a0,#f15c41);
+    cursor: pointer;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+    font-size: 14px;
 }
 h1{
     text-align: center;

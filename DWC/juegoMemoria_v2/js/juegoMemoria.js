@@ -4,7 +4,7 @@ class Tablero {
         filas = prompt('¿Cuántas filas quieres?');
         columnas = prompt('¿Cuántas columnas quieres?');
         }
-        while (filas*columnas%2 != 0)
+        while (((filas*columnas%2) != 0) && (filas+columnas < 4));
 
         this.filas = filas;
         this.columnas = columnas;
@@ -181,7 +181,8 @@ class juegoMemoria extends Tablero {
             this.valorprevio = null;
             this.valoractual = null;
             this.puntuacion = 0;
-            document.getElementById("h2").innerHTML = this.puntuacion;
+            this.contador = 0;
+            document.getElementById("h2").innerHTML = (`${this.puntuacion}/${this.puntuacionMaxima}`);
 
             for (let i = 0; i < this.filas; i++) {
                 for (let j = 0; j < this.columnas; j++) {
@@ -189,8 +190,11 @@ class juegoMemoria extends Tablero {
                     celda.addEventListener("contextmenu",this.marcar);
                     celda.innerHTML = "";
                     celda.dataset.despejado = false;
+                    celda.dataset.puntuacion = 10;
+                    this.arrayTablero[i][j] = '';
                 }
             }
+            this.colocarParejas();
         }
     }
 
