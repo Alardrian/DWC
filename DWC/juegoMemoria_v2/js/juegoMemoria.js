@@ -4,7 +4,7 @@ class Tablero {
         filas = prompt('¿Cuántas filas quieres?');
         columnas = prompt('¿Cuántas columnas quieres?');
         }
-        while (filas*columnas%2 != 0);
+        while (filas*columnas%2 != 0 || (filas*columnas)/2 < 2);
 
         this.filas = filas;
         this.columnas = columnas;
@@ -73,10 +73,8 @@ class juegoMemoria extends Tablero {
         this.puntuacionMaxima = ((this.filas * this.columnas) / 2 * 10);
         this.parejasCorrectas = 0;
 
-        this.minutosInicio;
-        this.minutosFinal;
-        this.segundosInicio;
-        this.segundosFinal;
+        this.tiempoInicio;
+        this.tiempoFinal;
         this.tiempoTranscurrido;
 
         this.colocarParejas();
@@ -90,6 +88,7 @@ class juegoMemoria extends Tablero {
         this.reiniciar = this.reiniciar.bind(this);
 
         document.getElementById("h2").innerHTML = (`${this.puntuacion}/${this.puntuacionMaxima}`);
+        //Creamos el boton de reiniciar y le damos un evento.
         const botonReiniciar = document.createElement('button');
         botonReiniciar.type = 'button';
         botonReiniciar.innerText = 'Reiniciar';
@@ -101,7 +100,7 @@ class juegoMemoria extends Tablero {
             
             for (let j = 0; j < this.columnas; j++) {
                celda = document.getElementById(`f${i}_c${j}`);
-
+                //A cada celda del array le ponemos su propio evento marcar
                 celda.addEventListener("contextmenu",this.marcar);
                 document.oncontextmenu = function(){return false};
             }
@@ -118,19 +117,25 @@ class juegoMemoria extends Tablero {
         let cColumna = celda.dataset.columna;
 
         if (this.contador === 1){
+            //Aqui se mete si ya hay una casilla clicada, osea que esta segunda es la 2 que compararemos
+            //desvelamos la casilla, ponemos valor a la variable valoractual con la posicion de esta casilla
             celda.innerHTML = this.arrayTablero[cFila][cColumna];
             celda.dataset.despejado = true;
             this.valoractual = [cFila,cColumna]
             this.contador = 0;
+            //Este if comprueba si las 2 casillas son de la misma pareja, con los valores que hemos guardado previamente
             if (this.arrayTablero[this.valoractual[0]][[this.valoractual[1]]] !=
                 this.arrayTablero[this.valorprevio[0]][[this.valorprevio[1]]]){
-    
+            //Si no son iguales espera 0.5seg y utiliza el metodo de quitar cartas.
             setTimeout(() => {
                 this.quitarCartas(celda);
                 }, 500);
             }else{
+            //Si son iguales sumamos 1 pareja correcta y suma la puntuacion con el metodo sumar puntuacion
                 this.sumarPuntuacion(celda);
                 this.parejasCorrectas++;
+            //Este comprueba si hemos llegado al limite maximo de parejas correctas y si es así nos lleva al metodo
+            //de ganar y al de timer, que nos da un valor que utilizamos para el metodo ganar también.
                 if(this.parejasCorrectas == this.filas*this.columnas/2){
                     this.timerFinal();
                     this.ganar();
@@ -138,6 +143,9 @@ class juegoMemoria extends Tablero {
             }
         }
         else {
+            //Aquí se metera si es la primera que compararemos( el primer click de cada pareja )
+            //Lo desvela y le quita el event listener y damos valor a la variable valorprevio con la 
+            //posicion de esta casilla.
             celda.innerHTML = this.arrayTablero[cFila][cColumna];
             celda.dataset.despejado = true;
             this.valorprevio = [cFila,cColumna];
@@ -147,25 +155,17 @@ class juegoMemoria extends Tablero {
     }
 
     ganar(){
-        alert(`Has ganado, tu puntuación es de ${this.puntuacion}
-         y has tardado ${this.tiempoTranscurrido}`);
+        alert(`¡Has ganado! tu puntuación es de ${this.puntuacion}
+    Tiempo tardado: ${this.tiempoTranscurrido} seg`);
     }
     timerInicial(){
         let tiempo = new Date();
-        this.segundosInicio = tiempo.getSeconds();
-        this.minutosInicio = tiempo.getMinutes();
+        this.tiempoInicio = tiempo.getTime();
     }
     timerFinal(){
         let tiempo = new Date();
-        this.segundosFinal = tiempo.getSeconds();
-        this.minutosFinal = tiempo.getMinutes();
-
-       if(this.minutosFinal - this.minutosInicio === 0){
-            this.tiempoTranscurrido =`${this.segundosFinal - this.segundosInicio} seg`;
-        }
-        else{
-            this.tiempoTranscurrido = `${this.minutosFinal - this.minutosInicio} min ${this.segundosFinal} seg`;
-        }
+        this.tiempoFinal = tiempo.getTime();
+        this.tiempoTranscurrido = parseInt((this.tiempoFinal - this.tiempoInicio) / 1000);
     }
 
     quitarCartas(celda){
@@ -182,6 +182,8 @@ class juegoMemoria extends Tablero {
     }
 
     comprobarPuntuacion(celda){
+        //Comprueba la puntuación de la casilla en caso de haber fallado y la reduce, 
+        //dependiendo de la que fuera la anterior.
         switch (celda.dataset.puntuacion){
             case "10": celda.dataset.puntuacion = "5";
             break;
@@ -194,7 +196,8 @@ class juegoMemoria extends Tablero {
         }
     }
     sumarPuntuacion(celda){
-
+        //Esto suma la puntuación y actualiza el valor de la variable puntuacion, que a la vez metemos
+        //en el elemento h2.
         let puntuacion1 = parseFloat(celda.dataset.puntuacion);
 
         celda = document.getElementById(`f${this.valorprevio[0]}_c${this.valorprevio[1]}`);
@@ -210,26 +213,11 @@ class juegoMemoria extends Tablero {
     }
 
     reiniciar(){
+        //nos pregunta si queremos reiniciar y en caso de aceptar procede a crear
+        //una partida nueva, dejando todo como estaba al principio
 
         if (confirm("¿Seguro que quieres reiniciar? Se creará una partida nueva")) {
-            let celda;
-            this.valorprevio = null;
-            this.valoractual = null;
-            this.puntuacion = 0;
-            this.contador = 0;
-            document.getElementById("h2").innerHTML = (`${this.puntuacion}/${this.puntuacionMaxima}`);
-
-            for (let i = 0; i < this.filas; i++) {
-                for (let j = 0; j < this.columnas; j++) {
-                    celda = document.getElementById(`f${i}_c${j}`);
-                    celda.addEventListener("contextmenu",this.marcar);
-                    celda.innerHTML = "";
-                    celda.dataset.despejado = false;
-                    celda.dataset.puntuacion = 10;
-                    this.arrayTablero[i][j] = '';
-                }
-            }
-            this.colocarParejas();
+            location.reload()
         }
     }
 
