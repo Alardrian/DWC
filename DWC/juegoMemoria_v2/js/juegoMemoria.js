@@ -4,7 +4,7 @@ class Tablero {
         filas = prompt('¿Cuántas filas quieres?');
         columnas = prompt('¿Cuántas columnas quieres?');
         }
-        while (((filas*columnas%2) != 0) && (filas+columnas < 4));
+        while (filas*columnas%2 != 0);
 
         this.filas = filas;
         this.columnas = columnas;
@@ -67,11 +67,19 @@ class juegoMemoria extends Tablero {
         super(filas,columnas);
         this.valorprevio;
         this.valoractual;
+
         this.contador = 0;
         this.puntuacion = 0;
         this.puntuacionMaxima = ((this.filas * this.columnas) / 2 * 10);
+        this.parejasCorrectas = 0;
 
-       this.colocarParejas();
+        this.minutosInicio;
+        this.minutosFinal;
+        this.segundosInicio;
+        this.segundosFinal;
+        this.tiempoTranscurrido;
+
+        this.colocarParejas();
     }
 
     dibujarTableroDOM(){
@@ -97,8 +105,8 @@ class juegoMemoria extends Tablero {
                 celda.addEventListener("contextmenu",this.marcar);
                 document.oncontextmenu = function(){return false};
             }
-            
-        }
+        }  
+        this.timerInicial();
     }
 
     marcar(elEvento){
@@ -122,6 +130,11 @@ class juegoMemoria extends Tablero {
                 }, 500);
             }else{
                 this.sumarPuntuacion(celda);
+                this.parejasCorrectas++;
+                if(this.parejasCorrectas == this.filas*this.columnas/2){
+                    this.timerFinal();
+                    this.ganar();
+                };
             }
         }
         else {
@@ -130,6 +143,28 @@ class juegoMemoria extends Tablero {
             this.valorprevio = [cFila,cColumna];
             this.contador = 1;
             celda.removeEventListener("contextmenu",this.marcar);
+        }
+    }
+
+    ganar(){
+        alert(`Has ganado, tu puntuación es de ${this.puntuacion}
+         y has tardado ${this.tiempoTranscurrido}`);
+    }
+    timerInicial(){
+        let tiempo = new Date();
+        this.segundosInicio = tiempo.getSeconds();
+        this.minutosInicio = tiempo.getMinutes();
+    }
+    timerFinal(){
+        let tiempo = new Date();
+        this.segundosFinal = tiempo.getSeconds();
+        this.minutosFinal = tiempo.getMinutes();
+
+       if(this.minutosFinal - this.minutosInicio === 0){
+            this.tiempoTranscurrido =`${this.segundosFinal - this.segundosInicio} seg`;
+        }
+        else{
+            this.tiempoTranscurrido = `${this.minutosFinal - this.minutosInicio} min ${this.segundosFinal} seg`;
         }
     }
 
@@ -200,7 +235,7 @@ class juegoMemoria extends Tablero {
 
     colocarParejas(){
 
-        let parejas = ["🐟","🥶","👹","🖕","👽","😺","💣","🤢","💥","🌴"];
+        let parejas = ["🐟","🥶","👹","😈 ","💥 ","😺","💣","🤢","💥","🌴"];
         let casillasOcupadas = 0;
         let numParejas = 0;
         let repetidos = 0;
