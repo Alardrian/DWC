@@ -41,7 +41,6 @@ class Tablero {
                 columna.id= `f${i}_c${j}`;
                 columna.dataset.fila = i;
                 columna.dataset.columna = j;
-                columna.dataset.despejado = false;
                 columna.dataset.puntuacion = 10;
 
                 document.oncontextmenu = function(){return false};
@@ -120,7 +119,6 @@ class juegoMemoria extends Tablero {
             //Aqui se mete si ya hay una casilla clicada, osea que esta segunda es la 2 que compararemos
             //desvelamos la casilla, ponemos valor a la variable valoractual con la posicion de esta casilla
             celda.innerHTML = this.arrayTablero[cFila][cColumna];
-            celda.dataset.despejado = true;
             this.valoractual = [cFila,cColumna]
             this.contador = 0;
             //Este if comprueba si las 2 casillas son de la misma pareja, con los valores que hemos guardado previamente
@@ -147,7 +145,6 @@ class juegoMemoria extends Tablero {
             //Lo desvela y le quita el event listener y damos valor a la variable valorprevio con la 
             //posicion de esta casilla.
             celda.innerHTML = this.arrayTablero[cFila][cColumna];
-            celda.dataset.despejado = true;
             this.valorprevio = [cFila,cColumna];
             this.contador = 1;
             celda.removeEventListener("contextmenu",this.marcar);
@@ -170,13 +167,11 @@ class juegoMemoria extends Tablero {
 
     quitarCartas(celda){
         celda.innerHTML = "";
-        celda.dataset.despejado = false;
         celda.addEventListener("contextmenu",this.marcar);
         this.comprobarPuntuacion(celda);
 
         celda = document.getElementById(`f${this.valorprevio[0]}_c${this.valorprevio[1]}`);
         celda.innerHTML = "";
-        celda.dataset.despejado = false;
         celda.addEventListener("contextmenu",this.marcar);
         this.comprobarPuntuacion(celda);
     }
