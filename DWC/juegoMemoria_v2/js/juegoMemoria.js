@@ -152,20 +152,26 @@ class juegoMemoria extends Tablero {
     }
 
     ganar(){
+        //manda un mensaje de victoria con tu puntuacion y tiempo utilizado
         alert(`¡Has ganado! tu puntuación es de ${this.puntuacion}
     Tiempo tardado: ${this.tiempoTranscurrido} seg`);
     }
     timerInicial(){
+        //guarda el tiempo de inicio de la partida
         let tiempo = new Date();
         this.tiempoInicio = tiempo.getTime();
     }
     timerFinal(){
+        //guarda el tiempo final de la partida y hace la resta con el de inicio para
+        //saber cuanto tiempo has estado jugando
         let tiempo = new Date();
         this.tiempoFinal = tiempo.getTime();
         this.tiempoTranscurrido = parseInt((this.tiempoFinal - this.tiempoInicio) / 1000);
     }
 
     quitarCartas(celda){
+        //tapa las cartas y vuelve a ponerles el event listener para que puedas clicar de nuevo
+        // y les resta puntuacion
         celda.innerHTML = "";
         celda.addEventListener("contextmenu",this.marcar);
         this.comprobarPuntuacion(celda);

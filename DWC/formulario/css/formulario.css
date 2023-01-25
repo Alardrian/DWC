@@ -1,0 +1,41 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+#contenedor{
+    border: 1px solid black;
+    text-align: center;
+    width: 30%;
+    height: 25%;
+    margin: auto;
+    margin-top: 10%;
+}
+
+h1{
+    margin: 2% 2%;
+    font-size: 45px;
+}
+
+.input{
+    font-size: 30px;
+    margin: 5% 0%;
+    padding: 5px;
+    border: 2px solid red;
+    border-radius: 10px;
+}
+
+.verde{
+    font-size: 30px;
+    margin: 5% 0%;
+    padding: 5px;
+    border: 2px solid green;
+    border-radius: 10px;
+}
+
+#enviar{
+    font-size: 30px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 10px 190px;
+}
+
