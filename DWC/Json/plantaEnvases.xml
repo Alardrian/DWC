@@ -1,0 +1,45 @@
+<planta>
+    <contenedores>
+        <grandes permita="grandes">
+            <envases>   
+                <grandeAncho valido="alimentos"></grandeAncho>
+                <grandeAlto valido="alimentos"></grandeAlto>
+                <medianoAncho valido="alimentos"></medianoAncho>
+                <medianoAlto valido="sustanciasCorrosivas"></medianoAlto>
+                <pequeño valido="sustanciasCorrosivas"></pequeño>
+            </envases>
+        </grandes>
+        <medianos permite="medianos">
+            <envases>
+                <medianoAncho valido="alimentos"></medianoAncho>
+                <medianoAlto valido="sustanciasCorrosivas"></medianoAlto>
+                <pequeño valido="sustanciasCorrosivas"></pequeño>
+            </envases>
+        </medianos>
+        <verticales permite="altos">
+            <envases>
+                <grandeAlto valido="alimentos"></grandeAlto>
+                <medianoAlto valido="sustanciasCorrosivas"></medianoAlto>
+            </envases>
+        </verticales>
+    </contenedores>
+
+    <envases>
+        
+        
+        
+        
+    </envases>
+
+    <liquidos>
+        <agua></agua>
+        <leche></leche>
+        <lejia></lejia>
+        <amoniaco></amoniaco>
+        <jabon></jabon>
+        <aguarras></aguarras>
+        <aceite></aceite>
+        <vinagre></vinagre>
+        <alcohol></alcohol>
+    </liquidos>
+</planta>
